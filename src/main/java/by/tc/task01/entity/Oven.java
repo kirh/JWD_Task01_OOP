@@ -1,5 +1,10 @@
 package by.tc.task01.entity;
 
 public class Oven extends Appliance{
-	// you may add your own code here
+    private int powerConsumpiton;
+    private int weight;
+    private int capacity;
+    private int depth;
+    private float height;
+    private float width;
 }

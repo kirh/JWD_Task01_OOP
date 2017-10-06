@@ -1,5 +1,9 @@
 package by.tc.task01.entity;
 
 public class TabletPC extends Appliance{
-	// you may add your own code here
+    private int batteryCapacity;
+    private int displayInches;
+    private int memoryROM;
+    private int flashMemoryCapacity;
+    private String color;
 }
