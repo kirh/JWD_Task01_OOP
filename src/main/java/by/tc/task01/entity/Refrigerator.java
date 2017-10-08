@@ -1,6 +1,8 @@
 package by.tc.task01.entity;
 
-public class Refrigerator extends Appliance{
+import java.io.Serializable;
+
+public class Refrigerator extends Appliance implements Serializable{
 	private int powerConsumption;
 	private double weight;
 	private double freezerCapacity;
@@ -87,5 +89,18 @@ public class Refrigerator extends Appliance{
 		temp = Double.doubleToLongBits(width);
 		result = 31 * result + (int) (temp ^ (temp >>> 32));
 		return result;
+	}
+
+	@Override
+	public String toString() {
+		final StringBuilder sb = new StringBuilder("Refrigerator{");
+		sb.append("powerConsumption=").append(powerConsumption);
+		sb.append(", weight=").append(weight);
+		sb.append(", freezerCapacity=").append(freezerCapacity);
+		sb.append(", overalCapacity=").append(overalCapacity);
+		sb.append(", height=").append(height);
+		sb.append(", width=").append(width);
+		sb.append('}');
+		return sb.toString();
 	}
 }

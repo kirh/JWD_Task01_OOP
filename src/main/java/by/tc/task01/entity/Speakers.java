@@ -1,6 +1,8 @@
 package by.tc.task01.entity;
 
-public class Speakers extends Appliance{
+import java.io.Serializable;
+
+public class Speakers extends Appliance implements Serializable{
     private int powerConsumption;
     private int numberOfSpekears;
     private String frequencyRange;
@@ -61,5 +63,16 @@ public class Speakers extends Appliance{
         temp = Double.doubleToLongBits(cordLength);
         result = 31 * result + (int) (temp ^ (temp >>> 32));
         return result;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("Speakers{");
+        sb.append("powerConsumption=").append(powerConsumption);
+        sb.append(", numberOfSpekears=").append(numberOfSpekears);
+        sb.append(", frequencyRange='").append(frequencyRange).append('\'');
+        sb.append(", cordLength=").append(cordLength);
+        sb.append('}');
+        return sb.toString();
     }
 }

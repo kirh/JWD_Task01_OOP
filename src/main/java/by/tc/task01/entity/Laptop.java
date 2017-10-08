@@ -1,6 +1,8 @@
 package by.tc.task01.entity;
 
-public class Laptop extends Appliance{
+import java.io.Serializable;
+
+public class Laptop extends Appliance implements Serializable{
     private double batteryCapacity;
     private String os;
     private int memoryROM;
@@ -85,5 +87,18 @@ public class Laptop extends Appliance{
         temp = Double.doubleToLongBits(displayInchs);
         result = 31 * result + (int) (temp ^ (temp >>> 32));
         return result;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("Laptop{");
+        sb.append("batteryCapacity=").append(batteryCapacity);
+        sb.append(", os='").append(os).append('\'');
+        sb.append(", memoryROM=").append(memoryROM);
+        sb.append(", systemMemory=").append(systemMemory);
+        sb.append(", cpu=").append(cpu);
+        sb.append(", displayInchs=").append(displayInchs);
+        sb.append('}');
+        return sb.toString();
     }
 }

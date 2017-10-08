@@ -1,6 +1,8 @@
 package by.tc.task01.entity;
 
-public class VacuumCleaner extends Appliance{
+import java.io.Serializable;
+
+public class VacuumCleaner extends Appliance implements Serializable{
     private int powerConsumption;
     private String filterType;
     private String bagType;
@@ -80,5 +82,18 @@ public class VacuumCleaner extends Appliance{
         result = 31 * result + motorSpeedRegulation;
         result = 31 * result + cleaningWidth;
         return result;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("VacuumCleaner{");
+        sb.append("powerConsumption=").append(powerConsumption);
+        sb.append(", filterType='").append(filterType).append('\'');
+        sb.append(", bagType='").append(bagType).append('\'');
+        sb.append(", wandType='").append(wandType).append('\'');
+        sb.append(", motorSpeedRegulation=").append(motorSpeedRegulation);
+        sb.append(", cleaningWidth=").append(cleaningWidth);
+        sb.append('}');
+        return sb.toString();
     }
 }

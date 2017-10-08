@@ -1,6 +1,8 @@
 package by.tc.task01.entity;
 
-public class TabletPC extends Appliance{
+import java.io.Serializable;
+
+public class TabletPC extends Appliance implements Serializable{
     private int batteryCapacity;
     private double displayInches;
     private int memoryROM;
@@ -72,5 +74,17 @@ public class TabletPC extends Appliance{
         result = 31 * result + flashMemoryCapacity;
         result = 31 * result + (color != null ? color.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("TabletPC{");
+        sb.append("batteryCapacity=").append(batteryCapacity);
+        sb.append(", displayInches=").append(displayInches);
+        sb.append(", memoryROM=").append(memoryROM);
+        sb.append(", flashMemoryCapacity=").append(flashMemoryCapacity);
+        sb.append(", color='").append(color).append('\'');
+        sb.append('}');
+        return sb.toString();
     }
 }

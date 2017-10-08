@@ -1,19 +1,21 @@
 package by.tc.task01.entity;
 
-public class Oven extends Appliance{
-    private int powerConsumpiton;
+import java.io.Serializable;
+
+public class Oven extends Appliance implements Serializable{
+    private int powerConsumption;
     private double weight;
     private double capacity;
     private double depth;
     private double height;
     private double width;
 
-    public int getPowerConsumpiton() {
-        return powerConsumpiton;
+    public int getPowerConsumption() {
+        return powerConsumption;
     }
 
-    public void setPowerConsumpiton(int powerConsumpiton) {
-        this.powerConsumpiton = powerConsumpiton;
+    public void setPowerConsumption(int powerConsumption) {
+        this.powerConsumption = powerConsumption;
     }
 
     public double getWeight() {
@@ -63,7 +65,7 @@ public class Oven extends Appliance{
 
         Oven oven = (Oven) o;
 
-        if (powerConsumpiton != oven.powerConsumpiton) return false;
+        if (powerConsumption != oven.powerConsumption) return false;
         if (Double.compare(oven.weight, weight) != 0) return false;
         if (Double.compare(oven.capacity, capacity) != 0) return false;
         if (Double.compare(oven.depth, depth) != 0) return false;
@@ -75,7 +77,7 @@ public class Oven extends Appliance{
     public int hashCode() {
         int result;
         long temp;
-        result = powerConsumpiton;
+        result = powerConsumption;
         temp = Double.doubleToLongBits(weight);
         result = 31 * result + (int) (temp ^ (temp >>> 32));
         temp = Double.doubleToLongBits(capacity);
@@ -87,5 +89,18 @@ public class Oven extends Appliance{
         temp = Double.doubleToLongBits(width);
         result = 31 * result + (int) (temp ^ (temp >>> 32));
         return result;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("Oven{");
+        sb.append("powerConsumption=").append(powerConsumption);
+        sb.append(", weight=").append(weight);
+        sb.append(", capacity=").append(capacity);
+        sb.append(", depth=").append(depth);
+        sb.append(", height=").append(height);
+        sb.append(", width=").append(width);
+        sb.append('}');
+        return sb.toString();
     }
 }
