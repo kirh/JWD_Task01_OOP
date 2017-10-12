@@ -3,17 +3,17 @@ package by.tc.task01.entity;
 import java.io.Serializable;
 
 public class TabletPC extends Appliance implements Serializable{
-    private int batteryCapacity;
+    private double batteryCapacity;
     private double displayInches;
     private int memoryROM;
     private int flashMemoryCapacity;
     private String color;
 
-    public int getBatteryCapacity() {
+    public double getBatteryCapacity() {
         return batteryCapacity;
     }
 
-    public void setBatteryCapacity(int batteryCapacity) {
+    public void setBatteryCapacity(double batteryCapacity) {
         this.batteryCapacity = batteryCapacity;
     }
 
@@ -56,7 +56,7 @@ public class TabletPC extends Appliance implements Serializable{
 
         TabletPC tabletPC = (TabletPC) o;
 
-        if (batteryCapacity != tabletPC.batteryCapacity) return false;
+        if (Double.compare(tabletPC.batteryCapacity, batteryCapacity) != 0) return false;
         if (Double.compare(tabletPC.displayInches, displayInches) != 0) return false;
         if (memoryROM != tabletPC.memoryROM) return false;
         if (flashMemoryCapacity != tabletPC.flashMemoryCapacity) return false;
@@ -67,7 +67,8 @@ public class TabletPC extends Appliance implements Serializable{
     public int hashCode() {
         int result;
         long temp;
-        result = batteryCapacity;
+        temp = Double.doubleToLongBits(batteryCapacity);
+        result = (int) (temp ^ (temp >>> 32));
         temp = Double.doubleToLongBits(displayInches);
         result = 31 * result + (int) (temp ^ (temp >>> 32));
         result = 31 * result + memoryROM;

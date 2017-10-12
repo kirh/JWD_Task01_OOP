@@ -3,92 +3,83 @@ package by.tc.task01.dao.impl;
 import by.tc.task01.dao.ApplianceDAO;
 import by.tc.task01.entity.Appliance;
 import by.tc.task01.entity.criteria.Criteria;
-import org.apache.commons.beanutils.BeanUtils;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 
-public class ApplianceDAOImpl implements ApplianceDAO{
+public final class ApplianceDAOImpl implements ApplianceDAO{
 
-	private static final String APPLIANCE_ENTITY_PACKAGE = Appliance.class.getPackage().getName();
+	private static final String APPLIANCE_DB_PATH = "/appliances_db.txt";
+
+	private ApplianceFactory applianceFactory = new ApplianceFactory();
 
 	@Override
 	public <E> Appliance find(Criteria<E> criteria) {
 
-		if (criteria.isEmpty()){
-			return null;
-		}
+		Appliance appliance = null;
 
 		try(BufferedReader in = new BufferedReader(
-				new InputStreamReader(this.getClass().getResourceAsStream("/appliances_db.txt"), StandardCharsets.UTF_8)))
+				new InputStreamReader(this.getClass().getResourceAsStream(APPLIANCE_DB_PATH), StandardCharsets.UTF_8)))
 		{
-			boolean found = false;
+			boolean isMatch = false;
 			String line = null;
-			while (!found && (line = in.readLine()) != null){
-				found = matches(criteria, line);
+			while (!isMatch && (line = in.readLine()) != null){
+				isMatch = matches(criteria, line);
 			}
-			if (found){
-				return getAppliance(line);
+			if (isMatch){
+				appliance = applianceFactory.createAppliance(criteria.getApplianceType(), createPropertiesMap(line));
 			}
 
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return null;
+		return appliance;
 	}
 
-	private <E> boolean matches(Criteria<E> criteria, String line){
-		boolean matches;
-		matches = line.startsWith(criteria.getApplianceType());
+	private <E> boolean matches(Criteria<E> criteria, String applianceLine){
+		boolean isMatch = typeMatches(criteria.getApplianceType(), applianceLine);
+		if (!isMatch){
+			return false;
+		}
 		Iterator<Map.Entry<E, Object>> criteriaIterator = criteria.getCriteria().entrySet().iterator();
-		while (matches && criteriaIterator.hasNext()){
+		while (isMatch && criteriaIterator.hasNext()){
 			Map.Entry<E, Object> next = criteriaIterator.next();
-			matches = line.contains(next.getKey() + "=" + next.getValue());
+			String regex = new StringBuilder()
+					.append(".*\\s")
+					.append(next.getKey())
+					.append('=')
+					.append(next.getValue())
+					.append(".*")
+					.toString();
+			isMatch = Pattern.compile(regex, Pattern.CASE_INSENSITIVE).matcher(applianceLine).matches();
 		}
-		return matches;
+		return isMatch;
 	}
 
-	private Appliance getAppliance(String line){
-		String type = line.substring(0, line.indexOf(' '));
-		Map<String, String> propertiesMap = createPropertiesMap(line);
-
-		try {
-			Object object = Class.forName(APPLIANCE_ENTITY_PACKAGE + "." + type).newInstance();
-			BeanUtils.populate(object, propertiesMap);
-			if (object instanceof Appliance){
-				return (Appliance) object;
-			}
-		} catch (IllegalAccessException | InstantiationException | ClassNotFoundException | InvocationTargetException e) {
-			e.printStackTrace();
+	private Map<String, Object> createPropertiesMap(String applianceLine){
+		String[] properties = getProperties(applianceLine);
+		HashMap<String, Object> propertiesMap = new HashMap<>();
+		for (String property : properties){
+			String[] entry = property.split("=");
+			propertiesMap.put(entry[0], entry[1]);
 		}
-		return null;
+		return propertiesMap;
 	}
 
-	private Map<String, String> createPropertiesMap(String line){
-		line = line.substring(line.indexOf(": ") + 2);
-		String[] props = line.split("[:\\s,;]+");
-		HashMap<String, String> properties = new HashMap<>();
-		for (String property : props){
-			String[] split = property.split("=");
-			String value = split[1];
-			String[] keyWords = split[0].toLowerCase().split("_");
-			String key = "";
-			for (int i = 0; i < keyWords.length; i++){
-				if (i > 0){
-					keyWords[i] = keyWords[i].substring(0,1).toUpperCase() + keyWords[i].substring(1);
-				}
-				key += keyWords[i];
-			}
+	private boolean typeMatches(String type, String applianceString){
+		return applianceString.startsWith(type);
+	}
 
-			properties.put(key, value);
-
-		}
+	private String[] getProperties(String applianceLine){
+		applianceLine = applianceLine.substring(applianceLine.indexOf(": ") + 2);
+		String[] properties = applianceLine.split("[:\\s,;]+");
 		return properties;
 	}
 
