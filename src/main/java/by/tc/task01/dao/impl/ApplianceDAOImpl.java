@@ -56,7 +56,7 @@ public final class ApplianceDAOImpl implements ApplianceDAO{
 					.append(next.getKey())
 					.append('=')
 					.append(next.getValue())
-					.append(".*")
+					.append("(,.*|;$)")
 					.toString();
 			isMatch = Pattern.compile(regex, Pattern.CASE_INSENSITIVE).matcher(applianceLine).matches();
 		}
