@@ -63,10 +63,4 @@ public class ValidatorTest {
         assertFalse(Validator.criteriaValidator(criteria));
     }
 
-    @Test(expected = ValidatorNotFoundException.class)
-    public void validatorNotFoundException() throws Exception {
-        criteria.setApplianceType("No validator");
-        criteria.add(SearchCriteria.Oven.WIDTH, 1);
-        Validator.criteriaValidator(criteria);
-    }
 }
