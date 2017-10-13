@@ -23,7 +23,7 @@ public final class Validator {
         applianceValidatorMap.put("VacuumCleaner", new VacuumCleanerPropertyValidator());
     }
 
-    public static <E> boolean criteriaValidator(Criteria<E> criteria) throws ValidatorNotFoundException{
+    public static <E> boolean criteriaValidator(Criteria<E> criteria) {
 
         if (criteria == null || criteria.isEmpty() || criteria.getCriteria().containsKey(null)) {
             return false;
@@ -32,7 +32,7 @@ public final class Validator {
         PropertyValidator propertyValidator = applianceValidatorMap.get(criteria.getApplianceType());
 
         if (propertyValidator == null) {
-            throw new ValidatorNotFoundException("There is no validator for  \"" + criteria.getApplianceType() + "\"");
+            return false;
         }
 
         boolean isValid = true;

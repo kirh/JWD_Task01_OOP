@@ -35,7 +35,7 @@ public final class ApplianceDAOImpl implements ApplianceDAO{
 				isMatch = matches(criteria, line);
 			}
 			if (isMatch){
-				appliance = getAppliance(criteria.getApplianceType(), line);
+				appliance = applianceFactory.createAppliance(criteria.getApplianceType(), createPropertiesMap(line));
 			}
 
 		} catch (IOException e) {
@@ -82,17 +82,6 @@ public final class ApplianceDAOImpl implements ApplianceDAO{
 		applianceLine = applianceLine.substring(applianceLine.indexOf(": ") + 2);
 		String[] properties = applianceLine.split("[:\\s,;]+");
 		return properties;
-	}
-
-	private Appliance getAppliance(String type, String applianceLine){
-		Appliance appliance = null;
-		try {
-			appliance = applianceFactory.createAppliance(type, createPropertiesMap(applianceLine));
-		} catch (ApplianceCreatorNotFoundException e) {
-			e.printStackTrace();
-		}
-		return appliance;
-
 	}
 
 }
