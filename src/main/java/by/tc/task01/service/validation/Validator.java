@@ -7,8 +7,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import static by.tc.task01.entity.criteria.SearchCriteria.*;
-
 public final class Validator {
 
     private Validator() {
@@ -25,7 +23,7 @@ public final class Validator {
         applianceValidatorMap.put("VacuumCleaner", new VacuumCleanerPropertyValidator());
     }
 
-    public static <E> boolean criteriaValidator(Criteria<E> criteria) {
+    public static <E> boolean criteriaValidator(Criteria<E> criteria) throws ValidatorNotFoundException{
 
         if (criteria == null || criteria.isEmpty() || criteria.getCriteria().containsKey(null)) {
             return false;

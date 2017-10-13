@@ -31,8 +31,8 @@ public final class ValidatorUtils {
         return isValid;
     }
 
-    public static boolean isEmptyString(Object value) {
-        return value == null || value.toString().equals("");
+    public static boolean isValidString(Object value) {
+        return value != null && !value.toString().equals("");
     }
 
     public static boolean isRange(Object value) {

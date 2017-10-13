@@ -1,6 +1,8 @@
 package by.tc.task01.dao.impl;
 
 import by.tc.task01.dao.ApplianceDAO;
+import by.tc.task01.dao.impl.factory.ApplianceCreatorNotFoundException;
+import by.tc.task01.dao.impl.factory.ApplianceFactory;
 import by.tc.task01.entity.Appliance;
 import by.tc.task01.entity.criteria.Criteria;
 
@@ -13,12 +15,11 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-
 public final class ApplianceDAOImpl implements ApplianceDAO{
 
 	private static final String APPLIANCE_DB_PATH = "/appliances_db.txt";
 
-	private ApplianceFactory applianceFactory = new ApplianceFactory();
+	private ApplianceFactory applianceFactory = ApplianceFactory.getApplianceFactory();
 
 	@Override
 	public <E> Appliance find(Criteria<E> criteria) {
@@ -34,7 +35,7 @@ public final class ApplianceDAOImpl implements ApplianceDAO{
 				isMatch = matches(criteria, line);
 			}
 			if (isMatch){
-				appliance = applianceFactory.createAppliance(criteria.getApplianceType(), createPropertiesMap(line));
+				appliance = getAppliance(criteria.getApplianceType(), line);
 			}
 
 		} catch (IOException e) {
@@ -74,13 +75,24 @@ public final class ApplianceDAOImpl implements ApplianceDAO{
 	}
 
 	private boolean typeMatches(String type, String applianceString){
-		return applianceString.startsWith(type);
+		return applianceString.startsWith(type + " ");
 	}
 
 	private String[] getProperties(String applianceLine){
 		applianceLine = applianceLine.substring(applianceLine.indexOf(": ") + 2);
 		String[] properties = applianceLine.split("[:\\s,;]+");
 		return properties;
+	}
+
+	private Appliance getAppliance(String type, String applianceLine){
+		Appliance appliance = null;
+		try {
+			appliance = applianceFactory.createAppliance(type, createPropertiesMap(applianceLine));
+		} catch (ApplianceCreatorNotFoundException e) {
+			e.printStackTrace();
+		}
+		return appliance;
+
 	}
 
 }

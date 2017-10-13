@@ -1,9 +1,9 @@
-package by.tc.task01.dao.impl.creator;
+package by.tc.task01.dao.impl.factory;
 
-import by.tc.task01.dao.impl.ApplianceCreator;
-import by.tc.task01.entity.Appliance;
 import by.tc.task01.entity.Laptop;
+
 import java.util.Map;
+
 import static by.tc.task01.entity.criteria.SearchCriteria.Laptop.BATTERY_CAPACITY;
 import static by.tc.task01.entity.criteria.SearchCriteria.Laptop.CPU;
 import static by.tc.task01.entity.criteria.SearchCriteria.Laptop.DISPLAY_INCHS;
@@ -11,10 +11,10 @@ import static by.tc.task01.entity.criteria.SearchCriteria.Laptop.MEMORY_ROM;
 import static by.tc.task01.entity.criteria.SearchCriteria.Laptop.OS;
 import static by.tc.task01.entity.criteria.SearchCriteria.Laptop.SYSTEM_MEMORY;
 
-public class LaptopCreator implements ApplianceCreator{
+final class LaptopCreator implements ApplianceCreator {
 
     @Override
-    public Appliance getAppliance(Map<String, Object> properties) {
+    public Laptop getAppliance(Map<String, Object> properties) {
         Laptop laptop = new Laptop();
         try {
             laptop.setBatteryCapacity(Double.parseDouble(properties.get(BATTERY_CAPACITY.name()).toString()));

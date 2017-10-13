@@ -1,8 +1,9 @@
-package by.tc.task01.dao.impl.creator;
+package by.tc.task01.dao.impl.factory;
 
-import by.tc.task01.dao.impl.ApplianceCreator;
-import by.tc.task01.entity.Appliance;
 import by.tc.task01.entity.Oven;
+
+import java.util.Map;
+
 import static by.tc.task01.entity.criteria.SearchCriteria.Oven.CAPACITY;
 import static by.tc.task01.entity.criteria.SearchCriteria.Oven.DEPTH;
 import static by.tc.task01.entity.criteria.SearchCriteria.Oven.HEIGHT;
@@ -10,13 +11,11 @@ import static by.tc.task01.entity.criteria.SearchCriteria.Oven.WEIGHT;
 import static by.tc.task01.entity.criteria.SearchCriteria.Oven.POWER_CONSUMPTION;
 import static by.tc.task01.entity.criteria.SearchCriteria.Oven.WIDTH;
 
-import java.util.Map;
-
-public class OvenCreator implements ApplianceCreator{
+final class OvenCreator implements ApplianceCreator {
 
 
     @Override
-    public Appliance getAppliance(Map<String, Object> properties) {
+    public Oven getAppliance(Map<String, Object> properties) {
         Oven oven = new Oven();
         try {
             oven.setCapacity(Double.parseDouble(properties.get(CAPACITY.name()).toString()));
